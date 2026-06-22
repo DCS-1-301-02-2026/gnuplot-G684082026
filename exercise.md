@@ -9,7 +9,7 @@
 - 軸には，縦軸「力(kN)」，横軸「たわみ(m)」のラベルが付いている．
 - 図の右上に凡例が入っている．
 
-![前半で作成したグラフがここに入る](force.png)
+![force.png](force.png)
 
 ## 2. 関数のプロット
 
@@ -21,11 +21,22 @@
 - 格子状の補助線を入れる．
 - 凡例は，`f1(x)` と `f2(x)` にする．
 
-![関数のプロット](funcplot.png)
+![kansu.png](funcplot.png)
 
 ```gnuplot {cmd=true output="html"}
 set terminal svg
-
+f1(x) = 2 * x**2 * sqrt(x) - 5 * x**2
+f2(x) = x / log(x)
+set xrange [0:7]
+set yrange [-20:15]
+set title "kansu no purotto"
+set xlabel "x"
+set ylabel "y"
+set grid
+plot f1(x) title "f1(x)", f2(x) title "f2(x)"
+set terminal pngcairo font "VL PGothic,10" enhanced
+set output "kansu.png"
+replot
 ```
 
 ## 3. 八王子の気温
@@ -46,7 +57,12 @@ set terminal svg
 set xdata time
 set timefmt '%Y/%m/%d'
 set xtics format "%m/%d"
-
+set datafile separator ','
+set title "八王子の気温"
+set xlabel "日付"
+set ylabel "気温 (°C)"
+set grid
+plot "weather2026.csv" using 1:2 title "最高気温" with lines, "" using 1:3 title "最高気温（平年）" with lines, "weather2026.csv" using 1:4 title "最低気温" with lines, "weather2026.csv" using 1:5 title "最低気温(平年)" with lines
 ```
 
 ## 4． 誕生月
@@ -66,6 +82,12 @@ set xtics format "%m/%d"
 ```gnuplot {cmd=true, output="html"}
 set terminal svg
 unset key
-
-
+set yrange [0:18]
+set style fill solid
+set boxwidth 0.6
+set title "誕生日の月別人数"
+set xlabel "誕生月"
+set ylabel "人数"
+set grid
+plot "bm.txt" using 2:xtic(1) with boxes lc rgb "skyblue"
 ```
